@@ -25,10 +25,10 @@ class Solution {
 
 public:
     bool balanced=true;
-    void isBalancedVoid(TreeNode* root) {
+    bool isBalanced(TreeNode* root) {
         
         if(root==NULL){
-            return;
+            return true;
         }
         int left=height(root->left);
         int right=height(root->right);
@@ -36,13 +36,12 @@ public:
             balanced=false;
         }
         if(balanced==false){
-            return;
+            return false;
         }
         isBalanced(root->left);
         isBalanced(root->right);
+
+        return balanced;
         
-    }
-    bool isBalanced(TreeNode* root) {
-        isBalancedVoid(root); return balanced;
     }
 };
