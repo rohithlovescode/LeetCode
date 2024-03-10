@@ -1,43 +1,55 @@
 class MedianFinder {
-    vector<int> arr;
+    int size;
+    priority_queue<int> left;
+    priority_queue<int,vector<int>,greater<int>> right;
 public:
     MedianFinder() {
-        
-    }
-    void insertionSort(){
-        int last=arr[arr.size()-1];
-        int i;
-        for(i=0;i<arr.size()-1;){
-            if(arr[i]<last){
-                i++;
-            }
-            else{
-                break;
-            }
-        }
-        for(int j=arr.size()-1;j>i;j--){
-            arr[j]=arr[j-1];
-        }
-        arr[i]=last;
+        size=0;
     }
     
     void addNum(int num) {
-        arr.push_back(num);
-        if(arr.size()>1)
-            insertionSort();
+        if(size==0){
+            left.push(num);
+        }
+        else{
+            if(size%2==1){
+                if(left.top()<=num){
+                    right.push(num);
+                }else{
+                    int topp=left.top();
+                    left.pop();
+                    left.push(num);
+                    right.push(topp);
+                }
+            }else{
+                if(right.top()<num){
+                    int topp=right.top();
+                    right.pop();
+                    right.push(num);
+                    left.push(topp);
+                }
+                else{
+                    left.push(num);
+                }
+            }
+        }
+        size++;
     }
     
     double findMedian() {
-        int n=arr.size();
-        if(n==0){
+        if(size==0){
             return -1;
+        }else if(size%2==1){
+            return left.top();
         }
-        if(n%2==1){
-            return arr[n/2];
-        }else{
-            float ans=float(arr[n/2]+arr[n/2-1])/2;
+
+        else if(size%2==0){
+            int leftVal=left.top();
+            int rightVal=right.top();
+            double ans=double(double(leftVal)+double(rightVal))/2;
             return ans;
         }
+        return 0;
     }
 };
 
