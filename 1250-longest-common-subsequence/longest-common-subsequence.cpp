@@ -7,14 +7,16 @@ class Solution {
             return dp[ind1][ind2];
         }
         else if(text1[ind1]==text2[ind2]){
+            dp[ind1][ind2]= 1+solve(text1,text2,dp,ind1-1,ind2-1);
             
-            
-            return dp[ind1][ind2]= 1+solve(text1,text2,dp,ind1-1,ind2-1);
+            return dp[ind1][ind2];
         }
         else{//text1[leng1-1]!=text2[leng2-1]
+            int left=solve(text1,text2,dp,ind1-1,ind2);
+            int right=solve(text1,text2,dp,ind1,ind2-1);
+            dp[ind1][ind2]=max(left,right);
             
-            
-            return dp[ind1][ind2]=max(solve(text1,text2,dp,ind1-1,ind2),solve(text1,text2,dp,ind1,ind2-1));
+            return dp[ind1][ind2];
         }
         
 
