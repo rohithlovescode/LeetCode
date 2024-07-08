@@ -1,46 +1,60 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
-class compare{
-public:
-    bool operator()(ListNode* a, ListNode* b){
-        return a->val>b->val;
-    }
-};
 class Solution {
+    ListNode* merge(ListNode* head1, ListNode* head2) {
+        if (!head1)
+            return head2;
+        if (!head2)
+            return head1;
+        ListNode* ptr1 = head1;
+        ListNode* ptr2 = head2;
+        ListNode* result = NULL;
+        ListNode* tail = NULL;
+
+        while(ptr1 && ptr2) {
+            if (ptr1->val < ptr2->val) {
+                if (tail) {
+                    tail->next = ptr1;
+                    tail = tail->next;
+                } else {
+                    result = tail = ptr1;
+                }
+                ptr1 = ptr1->next;
+                tail->next = NULL;
+            } else {
+                if (tail) {
+                    tail->next = ptr2;
+                    tail = tail->next;
+                } else {
+                    result = tail = ptr2;
+                }
+                ptr2 = ptr2->next;
+                tail->next = NULL;
+            }
+        }
+
+        if (ptr1) {
+            tail->next = ptr1;
+        } else {
+            tail->next = ptr2;
+        }
+        return result;
+    }
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        ListNode* dummy=new ListNode(0);
-        ListNode* curr=dummy;
-
-        priority_queue<ListNode*, vector<ListNode*>,compare> minHeap;
-        
-        int n=lists.size();
-
-        for(int i=0;i<n;i++){
-            if(lists[i]!=NULL){
-                minHeap.push(lists[i]);
+        int n = lists.size();
+        if (n == 0)
+            return {};
+        if (n == 1) {
+            return lists[0];
+        }
+        int lim = log2(n);
+        for (int x = 0; x <= lim; x++) {
+            int step = 2 << x;
+            int next = step >> 1;
+            for (int i = 0; i < n; i += step) {
+                if (i + next < n)
+                    lists[i] = merge(lists[i], lists[i + next]);
             }
         }
-
-        while(!minHeap.empty()){
-            ListNode* topp=minHeap.top();
-            curr->next=topp;
-            curr=curr->next;
-            minHeap.pop();
-
-            if(topp&&topp->next){
-                minHeap.push(topp->next);
-            }
-        }
-        return dummy->next;
-
+        return lists[0];
     }
 };
