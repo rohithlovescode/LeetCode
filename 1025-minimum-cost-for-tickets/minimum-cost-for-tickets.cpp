@@ -10,9 +10,6 @@ public:
         return -1;
     }
     int solve(int solvedUntil,vector<int> & days, vector<int> & costs,vector<int> & dp){
-        if(solvedUntil<366&&dp[solvedUntil]!=-1){
-            return dp[solvedUntil];
-        }
         int next=findNext(solvedUntil,days);
         if(next==-1){
             return 0;
@@ -28,7 +25,7 @@ public:
         for(int i=solvedUntil;i<=next;i++){
             dp[i]=sol;
         }
-        return dp[next];
+        return sol;
     }
     int mincostTickets(vector<int>& days, vector<int>& costs) {
         int solvedUntil=1;
