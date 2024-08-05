@@ -25,9 +25,7 @@ public:
         int c=costs[2]+solve(next+30,days,costs,dp);
 
         int sol= min(a,min(b,c));
-        for(int i=solvedUntil;i<=next;i++){
-            dp[i]=sol;
-        }
+        dp[next]=sol;
         return dp[next];
     }
     int mincostTickets(vector<int>& days, vector<int>& costs) {
