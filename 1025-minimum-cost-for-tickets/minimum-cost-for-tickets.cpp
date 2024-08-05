@@ -10,6 +10,9 @@ public:
         return -1;
     }
     int solve(int solvedUntil,vector<int> & days, vector<int> & costs,vector<int> & dp){
+        if(solvedUntil<366&&dp[solvedUntil]!=-1){
+            return dp[solvedUntil];
+        }
         int next=findNext(solvedUntil,days);
         if(next==-1){
             return 0;
