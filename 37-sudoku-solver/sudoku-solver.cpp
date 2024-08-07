@@ -1,36 +1,69 @@
 class Solution {
- public:
-  void solveSudoku(vector<vector<char>>& board) {
-    solve(board, 0);
-  }
+public:
+    bool canPlace(vector<vector<char>> board, char n, int row, int col) {
+        for (auto c : board[row]) {
+            if (c == n)
+                return false;
+        }
+        int effCol;
+        int effRow;
 
- private:
-  bool solve(vector<vector<char>>& board, int s) {
-    if (s == 81)
-      return true;
+        if (col < 3)
+            effCol = 0;
+        else if (col < 6)
+            effCol = 3;
+        else
+            effCol = 6;
 
-    const int i = s / 9;
-    const int j = s % 9;
+        if (row < 3)
+            effRow = 0;
+        else if (row < 6)
+            effRow = 3;
+        else
+            effRow = 6;
 
-    if (board[i][j] != '.')
-      return solve(board, s + 1);
+        for (int i = effRow; i < effRow + 3; i++) {
+            for (int j = effCol; j < effCol + 3; j++) {
+                if (board[i][j] == n)
+                    return false;
+            }
+        }
 
-    for (char c = '1'; c <= '9'; ++c)
-      if (isValid(board, i, j, c)) {
-        board[i][j] = c;
-        if (solve(board, s + 1))
-          return true;
-        board[i][j] = '.';
-      }
+        for (int i = 0; i < 9; i++) {
+            if (board[i][col] == n)
+                return false;
+        }
+        return true;
 
-    return false;
-  }
+        // Another Approach
+        //  for(int i=0;i<9;i++)
+        //  {
+        //      if(board[i][col]==c)return false;
+        //      if(board[row][i]==c)return false;
+        //      if(board[3*(row/3)+i/3][3*(col/3)+i%3]==c)return false;
+        //  }
+        //  return true;
+    }
 
-  bool isValid(vector<vector<char>>& board, int row, int col, char c) {
-    for (int i = 0; i < 9; ++i)
-      if (board[i][col] == c || board[row][i] == c ||
-          board[3 * (row / 3) + i / 3][3 * (col / 3) + i % 3] == c)
-        return false;
-    return true;
-  }
+    bool solve(vector<vector<char>>& board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') {
+                    for (char c = '1'; c <= '9'; c++) {
+                        if (canPlace(board, c, i, j)) {
+                            board[i][j] = c;
+                            if (solve(board))
+                                return true;
+                            else
+                                board[i][j] = '.';
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    void solveSudoku(vector<vector<char>>& board) { solve(board); }
 };
