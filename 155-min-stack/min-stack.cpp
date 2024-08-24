@@ -9,25 +9,14 @@ public:
     
     void push(int val) {
         topIndex++;
-        if(myStack.size()<=topIndex){
-            myStack.push_back(val);
-            if(topIndex==0){
-                minimumElement.push_back(val);
-            }
-            else{
-                minimumElement.push_back(min(val,minimumElement[topIndex-1]));
-            }
+        minimumElement.resize(topIndex+1);
+        myStack.resize(topIndex+1);
+        if(topIndex==0){
+            minimumElement[topIndex]=val;
+        }else{
+            minimumElement[topIndex]=min(val,minimumElement[topIndex-1]);
         }
-        else{
-            myStack[topIndex]=(val);
-            if(topIndex==0){
-                minimumElement[topIndex]=(val);
-            }
-            else{
-                minimumElement[topIndex]=min(val,minimumElement[topIndex-1]);
-            }
-            
-        }
+        myStack[topIndex]=val;
 
     }
     
