@@ -1,6 +1,7 @@
 class Solution {
 public:
     bool isValid(string s) {
+        //we can use closingParentheses hashmap where for every '(' it is ), and so on
         stack<int> parentheses;
         for(char c: s){
             if(c=='('||c=='{'||c=='['){
