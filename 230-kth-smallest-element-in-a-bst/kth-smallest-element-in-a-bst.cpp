@@ -20,12 +20,13 @@ public:
         if((*count)==k){
             return root->val;
         }
-        int right=solve(root->right,k,count);
         if(left!=-1){
             return left;
-        }else{
-            return right;
         }
+
+
+        int right=solve(root->right,k,count);
+        return right;
 
     }
     int kthSmallest(TreeNode* root, int k) {
