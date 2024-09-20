@@ -1,50 +1,47 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        map<char,int> reqCounts;
-        int uniqueChar=0;
-        for(char ch:t){
-            if(reqCounts[ch]==0){
-                uniqueChar++;
+        if (s.length() < t.length()) {
+            return "";
+        }
+
+        unordered_map<char, int> charCount;
+        for (char ch : t) {
+            charCount[ch]++;
+        }
+
+        int targetCharsRemaining = t.length();
+        int minWindow[2] = {0, INT_MAX};
+        int startIndex = 0;
+
+        for (int endIndex = 0; endIndex < s.length(); endIndex++) {
+            char ch = s[endIndex];
+            if (charCount.find(ch) != charCount.end() && charCount[ch] > 0) {
+                targetCharsRemaining--;
             }
-            reqCounts[ch]++;
-        }
-        map<char,int> currCounts;
-        currCounts[s[0]]++;
-        int matching=0;
-        if((currCounts[s[0]]==reqCounts[s[0]])&&reqCounts[s[0]]!=0){
-            matching++;
-        }
-        int left=0;
-        int right=0;
-        int minChar=INT_MAX;
-        string ans="";
-        while(right<s.length()){
-            if(matching==uniqueChar){
-                if((right-left+1)<minChar){
-                    minChar=right-left+1;
-                    ans=s.substr(left,right-left+1);
+            charCount[ch]--;
+
+            if (targetCharsRemaining == 0) {
+                while (true) {
+                    char charAtStart = s[startIndex];
+                    if (charCount.find(charAtStart) != charCount.end() && charCount[charAtStart] == 0) {
+                        break;
+                    }
+                    charCount[charAtStart]++;
+                    startIndex++;
                 }
-                if(currCounts[s[left]]==reqCounts[s[left]]){
-                    matching--;
+
+                if (endIndex - startIndex < minWindow[1] - minWindow[0]) {
+                    minWindow[0] = startIndex;
+                    minWindow[1] = endIndex;
                 }
-                currCounts[s[left]]--;
-                left++;
-            }else{
-                right++;
-                currCounts[s[right]]++;
-                if(currCounts[s[right]]==reqCounts[s[right]]){
-                    matching++;
-                }
-                if(currCounts[s[left]]>reqCounts[s[left]]){
-                    currCounts[s[left]]--;
-                    left++;
-                }
+
+                charCount[s[startIndex]]++;
+                targetCharsRemaining++;
+                startIndex++;
             }
         }
-        return ans;
 
-
-
+        return minWindow[1] >= s.length() ? "" : s.substr(minWindow[0], minWindow[1] - minWindow[0] + 1);        
     }
 };
