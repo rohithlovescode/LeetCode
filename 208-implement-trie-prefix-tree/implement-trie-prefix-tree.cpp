@@ -1,75 +1,69 @@
-class TrieNode {
+class TrieNode{
 public:
-	char data;
-	TrieNode* children[26];
-	bool isEndNode;
-	TrieNode(char data) {
-		this->data = data;
-		isEndNode = false;
-
-		for (int i = 0;i < 26;i++) {
-			children[i] = NULL;
-		}
-	}
+    char data;
+    TrieNode* child[26];
+    bool isTerminal;
+    TrieNode(char data){
+        this->data=data;
+        for(int i=0;i<26;i++){
+            child[i]=NULL;
+        }
+        isTerminal=false;
+    }
+    
 };
 class Trie {
 public:
-	TrieNode* root;
-	Trie() {
-		root = new TrieNode('\0');
-	}
-	void insertRec(TrieNode* root, string word) {
-		int leng = word.length();
-		if (leng == 0) {
-			root->isEndNode = true;
-			return;
-		}
-		TrieNode* child;
-		if (root->children[word[0]-'a'] != NULL) {
-			child = root->children[word[0]-'a'];
-		}
-		else {
-			child = new TrieNode(word[0]);
-			root->children[word[0]-'a'] = child;
-		}
-		insertRec(child, word.substr(1));
-	}
-
-	void insert(string word) {
-		insertRec(root, word);
-	}
-
-	bool searchRec(TrieNode* root, string word) {
-		if (word.length() == 0) {
-			return root->isEndNode;
-		}
-		if (root->children[word[0]-'a'] != NULL) {
-			TrieNode* child = root->children[word[0]-'a'];
-			return searchRec(child, word.substr(1));
-		}
-		else {
-			return false;
-		}
-	}
-	bool search(string word) {
-		return searchRec(root, word);
-	}
-    bool startsWithRec(TrieNode* root,string prefix){
-        
-		if (prefix.length() == 0) {
-			return true;
-		}
-		if (root->children[prefix[0]-'a'] != NULL) {
-			TrieNode* child = root->children[prefix[0]-'a'];
-			return startsWithRec(child, prefix.substr(1));
-		}
-		else {
-			return false;
-		}
+    TrieNode* root;
+    Trie() {
+        root=new TrieNode('~');
+    }
+    
+    void insert(string word) {
+        TrieNode* temp=root;
+        int i;
+        for(i=0;i<word.size();i++){
+            char ch=word[i];
+            if(temp->child[ch-'a']==nullptr){
+                break;
+            }
+            temp=temp->child[ch-'a'];
+        }
+        for(;i<word.size();i++){
+            char ch=word[i];
+            temp->child[ch-'a']=new TrieNode(ch);
+            temp=temp->child[ch-'a'];
+        }
+        temp->isTerminal=true;
+    }
+    
+    bool search(string word) {
+        TrieNode* temp=root;
+        for(int i=0;i<word.size();i++){
+            char ch=word[i];
+            if(temp->child[ch-'a']==nullptr){
+                return false;
+            }
+            temp=temp->child[ch-'a'];
+        }
+        if(temp->isTerminal==true){
+            return true;
+        }
+        return false;
         
     }
+    
     bool startsWith(string prefix) {
-        return startsWithRec(root,prefix);
+        TrieNode* temp=root;
+        for(int i=0;i<prefix.size();i++){
+            char ch=prefix[i];
+            if(temp->child[ch-'a']==nullptr){
+                return false;
+            }
+            temp=temp->child[ch-'a'];
+        }
+        return true;
+        
     }
 };
 
