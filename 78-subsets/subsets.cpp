@@ -1,7 +1,7 @@
 class Solution {
 private:
     void solve(vector<int> nums,int index,vector<int> output,vector<vector<int>>& sol){
-        if(index>=nums.size()){
+        if(index==nums.size()){
             sol.push_back(output);
             return;
         }
@@ -14,7 +14,7 @@ private:
 public:
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> sol;
-        vector<int> output;//not completely sure why
+        vector<int> output;
         int index=0;
         solve(nums,index,output,sol);
         return sol;
