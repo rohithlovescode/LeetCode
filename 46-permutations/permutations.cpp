@@ -1,21 +1,22 @@
 class Solution {
-private:
-    void solve(vector<int> nums,int index,vector<vector<int>>& sol){
-        if(index>=nums.size()){
+public:
+    void solve(vector<int> nums,int ind,vector<vector<int>> &sol){
+        if(ind==nums.size()){
             sol.push_back(nums);
             return;
         }
-        for(int i=index;i<nums.size();i++){
-            swap(nums[i],nums[index]);
-            solve(nums,index+1,sol);
-            swap(nums[i],nums[index]);
+        for(int i=ind;i<nums.size();i++){
+            swap(nums[i],nums[ind]);
+            solve(nums,ind+1,sol);
+            swap(nums[i],nums[ind]);
         }
+
     }
-public:
     vector<vector<int>> permute(vector<int>& nums) {
+        int ind=0;
         vector<vector<int>> sol;
-        int index=0;
-        solve(nums,index,sol);
+        
+        solve(nums,ind,sol);
         return sol;
     }
 };
