@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int nextVal(int& ind,string version){
+    int nextVal(int& ind,string& version){
         int ans=0;
         while(ind<version.length()&&version[ind]!='.'){
             ans=ans*10+(version[ind]-'0');
