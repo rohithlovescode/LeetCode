@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void solve(vector<int>& div, int ind, vector<int>& ans, vector<int>& temp,int prod,int n,int k,int mini, int maxi,int currAns){
+    void solve(vector<int>& div, int ind, vector<int>& ans, vector<int>& temp,int prod,int n,int k,int mini, int maxi,int &currAns){
         if(ind>=div.size()|| prod>n){
             return;
         }
@@ -30,7 +30,8 @@ public:
             }
         }
         
-        solve(divisors,0,ans,temp,1,n,k,INT_MAX,INT_MIN,INT_MAX);
+        int currAns=INT_MAX;
+        solve(divisors,0,ans,temp,1,n,k,INT_MAX,INT_MIN,currAns);
         return ans;
     }
 };
