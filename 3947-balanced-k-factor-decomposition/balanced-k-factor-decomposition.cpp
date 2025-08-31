@@ -13,10 +13,9 @@ public:
         }
         temp.push_back(div[ind]);
         
-if (prod <= n / div[ind]) {  // prevents overflow and ensures prod*div[ind] <= n
-    solve(div, ind, ans, temp, prod * div[ind], n, k - 1,
-          min(mini, div[ind]), max(maxi, div[ind]), currAns);
-}
+        if (prod <= n / div[ind]) {
+            solve(div, ind, ans, temp, prod * div[ind], n, k - 1, min(mini, div[ind]), max(maxi, div[ind]), currAns);
+        }
 
         temp.pop_back();
         solve(div,ind+1,ans,temp,prod,n,k,mini,maxi,currAns);
