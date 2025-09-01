@@ -24,11 +24,14 @@ public:
         vector<int> divisors;
         vector<int> ans;
         vector<int> temp;
-        for(int i=1;i<=n;i++){
+        for(int i=1;i*i<=n;i++){
             if(n%i==0){
                 divisors.push_back(i);
+                if(n/i!=i)
+                divisors.push_back(n/i);
             }
         }
+        sort(divisors.begin(),divisors.end());
         
         int currAns=INT_MAX;
         solve(divisors,0,ans,temp,1,n,k,INT_MAX,INT_MIN,currAns);
