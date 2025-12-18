@@ -1,47 +1,43 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        if (s.length() < t.length()) {
-            return "";
+        int finalInd = -1;
+        int minWinSize = -1;
+
+        map<char,int> tCount;
+        map<char,int> sCount;
+
+        for(char ch : t){
+            tCount[ch]++;
         }
+        int uniqueChars = tCount.size();
+        int numMatching = 0;
 
-        unordered_map<char, int> charCount;
-        for (char ch : t) {
-            charCount[ch]++;
-        }
+        int startInd = 0;
+        for(int i = 0; i < s.length(); i++){
+            char ch = s[i];
+            sCount[ch]++;
 
-        int targetCharsRemaining = t.length();
-        int minWindow[2] = {0, INT_MAX};
-        int startIndex = 0;
-
-        for (int endIndex = 0; endIndex < s.length(); endIndex++) {
-            char ch = s[endIndex];
-            if (charCount.find(ch) != charCount.end() && charCount[ch] > 0) {
-                targetCharsRemaining--;
+            if (tCount.count(ch) && sCount[ch] == tCount[ch]) { // changed
+                numMatching++; // changed
             }
-            charCount[ch]--;
 
-            if (targetCharsRemaining == 0) {
-                while (true) {
-                    char charAtStart = s[startIndex];
-                    if (charCount.find(charAtStart) != charCount.end() && charCount[charAtStart] == 0) {
-                        break;
-                    }
-                    charCount[charAtStart]++;
-                    startIndex++;
+            while(numMatching == uniqueChars){
+                if (minWinSize == -1 || i - startInd + 1 < minWinSize) { // added
+                    finalInd = startInd; // changed
+                    minWinSize = i - startInd + 1; // changed
                 }
 
-                if (endIndex - startIndex < minWindow[1] - minWindow[0]) {
-                    minWindow[0] = startIndex;
-                    minWindow[1] = endIndex;
+                char theCh = s[startInd];
+                if (tCount.count(theCh) && sCount[theCh] == tCount[theCh]) { // changed
+                    numMatching--; // changed
                 }
-
-                charCount[s[startIndex]]++;
-                targetCharsRemaining++;
-                startIndex++;
+                sCount[theCh]--;
+                startInd++;
             }
         }
 
-        return minWindow[1] >= s.length() ? "" : s.substr(minWindow[0], minWindow[1] - minWindow[0] + 1);        
+        if(finalInd == -1) return "";
+        return s.substr(finalInd, minWinSize);
     }
 };
