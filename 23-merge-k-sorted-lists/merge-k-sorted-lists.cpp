@@ -1,60 +1,44 @@
-class Solution {
-    ListNode* merge(ListNode* head1, ListNode* head2) {
-        if (!head1)
-            return head2;
-        if (!head2)
-            return head1;
-        ListNode* ptr1 = head1;
-        ListNode* ptr2 = head2;
-        ListNode* result = NULL;
-        ListNode* tail = NULL;
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
 
-        while(ptr1 && ptr2) {
-            if (ptr1->val < ptr2->val) {
-                if (tail) {
-                    tail->next = ptr1;
-                    tail = tail->next;
-                } else {
-                    result = tail = ptr1;
-                }
-                ptr1 = ptr1->next;
-                tail->next = NULL;
-            } else {
-                if (tail) {
-                    tail->next = ptr2;
-                    tail = tail->next;
-                } else {
-                    result = tail = ptr2;
-                }
-                ptr2 = ptr2->next;
-                tail->next = NULL;
-            }
-        }
-
-        if (ptr1) {
-            tail->next = ptr1;
-        } else {
-            tail->next = ptr2;
-        }
-        return result;
+class compare{
+    public:
+    bool operator()(const ListNode* a,const ListNode* b){
+        return a->val>b->val;
     }
+};
+class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        int n = lists.size();
-        if (n == 0)
-            return {};
-        if (n == 1) {
-            return lists[0];
+        priority_queue<ListNode*,vector<ListNode*>,compare> pq;
+        
+        for(ListNode* list:lists){
+            if(list!=nullptr)
+                pq.push(list);
         }
-        int lim = log2(n);
-        for (int x = 0; x <= lim; x++) {
-            int step = 2 << x;
-            int next = step >> 1;
-            for (int i = 0; i < n; i += step) {
-                if (i + next < n)
-                    lists[i] = merge(lists[i], lists[i + next]);
-            }
+
+        ListNode* finalRoot=new ListNode(-1);
+        ListNode* iterNode=finalRoot;
+
+        while(!pq.empty()){
+            ListNode* top=pq.top();
+            pq.pop();
+            iterNode->next=top;
+            iterNode=iterNode->next;
+            if(top->next!=nullptr){
+                pq.push(top->next);
+            }            
         }
-        return lists[0];
+
+        finalRoot=finalRoot->next;
+        return finalRoot;
     }
 };
