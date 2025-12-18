@@ -18,7 +18,7 @@ public:
             char ch = s[i];
             sCount[ch]++;
 
-            if (tCount.count(ch) && sCount[ch] == tCount[ch]) { // changed
+            if (sCount[ch] == tCount[ch]) { // changed
                 numMatching++; // changed
             }
 
@@ -29,7 +29,7 @@ public:
                 }
 
                 char theCh = s[startInd];
-                if (tCount.count(theCh) && sCount[theCh] == tCount[theCh]) { // changed
+                if (sCount[theCh] == tCount[theCh]) { // changed
                     numMatching--; // changed
                 }
                 sCount[theCh]--;
