@@ -1,36 +1,38 @@
 class Solution {
-private:
-    bool dfs(int node,unordered_map<int,bool> &vis,unordered_map<int,bool> &completed
-        ,vector<vector<int>> &adj){
-        vis[node]=true;
-        bool ans=true;
-        for(auto it: adj[node]){
-            if(vis[it]&&!completed[it]){
-                return false;
-            }
-            if(!vis[it]){
-                ans=ans && dfs(it,vis,completed,adj);
-            }
-        }
-        completed[node]=true;
-        return ans;
-    }
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        vector<int> indegree(numCourses,0);
 
-        unordered_map<int,bool> vis,completed;
-        bool ans=true;
-        vector<vector<int>> adj(numCourses,vector<int>());
+        vector<vector<int>> adjList(numCourses,vector<int>());//syntax
 
-        for(auto it: prerequisites){
-            adj[it[0]].push_back(it[1]);
+        for(vector<int> prereq:prerequisites){//syn
+            int i=prereq[0];
+            int j=prereq[1];
+            adjList[i].push_back(j);
+            indegree[j]++;
         }
-
+        queue<int> q;
         for(int i=0;i<numCourses;i++){
-            if(!vis[i]){
-                ans=ans && dfs(i,vis,completed,adj);
+            if(indegree[i]==0){
+                q.push(i);
             }
         }
-        return ans;
+
+        
+        int coursesComplete=0;
+
+        while(!q.empty()){
+            int front=q.front();
+            q.pop();
+            coursesComplete++;
+            for(auto neigh:adjList[front]){
+                indegree[neigh]--;
+                if(indegree[neigh]==0){
+                    q.push(neigh);
+                }
+                
+            }
+        }
+        return coursesComplete==numCourses;
     }
 };
