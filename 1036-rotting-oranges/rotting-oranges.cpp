@@ -1,60 +1,57 @@
 class Solution {
 public:
-    void addNeighbors(vector<vector<int>>& grid,queue<pair<int,int>>& q,int i,int j,vector<vector<bool>>& visited,int& numOranges){
-        if(i-1>=0&&visited[i-1][j]==false&&grid[i-1][j]==1){
-            numOranges--;
-            q.push({i-1,j});
-            visited[i-1][j]=true;
-        }
-        if(j-1>=0&&visited[i][j-1]==false&&grid[i][j-1]==1){
-            numOranges--;
-            q.push({i,j-1});
-            visited[i][j-1]=true;
-        }
-        if(i+1<grid.size()&&visited[i+1][j]==false&&grid[i+1][j]==1){
-            numOranges--;
-            q.push({i+1,j});
-            visited[i+1][j]=true;
-        }
-        if(j+1<grid[0].size()&&visited[i][j+1]==false&&grid[i][j+1]==1){
-            numOranges--;
-            q.push({i,j+1});
-            visited[i][j+1]=true;
-        }
-    }
     int orangesRotting(vector<vector<int>>& grid) {
         queue<pair<int,int>> q;
-        int m=grid.size();
-        int n=grid[0].size();
 
-        vector<vector<bool>> visited(m,vector<bool>(n,false));
-        int freshOranges=0;
-        
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                if(grid[i][j]==1){
-                    freshOranges++;
-                }
-                else if(grid[i][j]==2){
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+                if(grid[i][j]==2){
                     q.push({i,j});
-                    visited[i][j]=true;
                 }
             }
         }
-        int ans=0;
-        while(!q.empty()&&freshOranges>0){
-            ans++;
+        q.push({-1,-1});//representing increase in time
 
-            int size=q.size();
-            while(size--){
-                pair<int,int> front = q.front();
-                q.pop();
-                addNeighbors(grid,q,front.first,front.second,visited,freshOranges);
+        int time=0;
+        while(!q.empty()){
+            int i,j;
+            pair<int,int> front=q.front();
+            i=front.first;
+            j=front.second;
+            q.pop();
+
+            if(i==-1){
+                time++;
+                if(q.size()!=0){
+                    q.push({-1,-1});
+                }
+            }else{
+                if(i-1>=0&&grid[i-1][j]==1){
+                    grid[i-1][j]=2;
+                    q.push({i-1,j});
+                }
+                if(j-1>=0&&grid[i][j-1]==1){
+                    grid[i][j-1]=2;
+                    q.push({i,j-1});
+                }
+                if(i+1<grid.size()&&grid[i+1][j]==1){
+                    grid[i+1][j]=2;
+                    q.push({i+1,j});
+                }
+                if(j+1<grid[0].size()&&grid[i][j+1]==1){
+                    grid[i][j+1]=2;
+                    q.push({i,j+1});
+                }
             }
         }
-        if(freshOranges==0){
-            return ans;
+        
+        for(int i=0;i<grid.size();i++){
+            for(int j=0;j<grid[0].size();j++){
+                if(grid[i][j]==1){
+                    return -1;
+                }
+            }
         }
-        return -1;
+        return time-1;
     }
 };
