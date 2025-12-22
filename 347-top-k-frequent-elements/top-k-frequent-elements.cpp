@@ -1,33 +1,27 @@
-struct minHeap{
-    bool operator()(const pair<int,int> &p1, const pair<int,int> &p2){
-        return p1.second>p2.second;
-    }
-};
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
-        vector<int> sol;
-        unordered_map<int,int> counts;
-        for(int i=0;i<nums.size();i++){
-            counts[nums[i]]++;
-        }
-        priority_queue<pair<int,int>, vector<pair<int,int>> , minHeap> topK;
-        int counter =0;
-        for(auto i: counts){
-            if(counter<k){
-                topK.push(i);// i is a pair
-                counter++;
+        unordered_map<int,int> mapp;
+        int n=nums.size();
 
-            }
-            else if(counter==k&&!topK.empty()&&topK.top().second<i.second){ 
-                topK.push(i);
-                topK.pop();
+        for(auto & num: nums){
+            mapp[num]++;
+        }
+
+        vector<vector<int>> buckets(n+1,vector<int>());
+        vector<int> ans;
+
+        for(auto& pair:mapp){
+            buckets[pair.second].push_back(pair.first);
+        }
+
+
+        for(int i=n;i>=0&&ans.size()<k;i--){
+            for(auto& num:buckets[i]){
+                ans.push_back(num);
             }
         }
-        while(!topK.empty()){
-            sol.push_back(topK.top().first);
-            topK.pop();
-        }
-        return sol;
+        return ans;
+
     }
 };
