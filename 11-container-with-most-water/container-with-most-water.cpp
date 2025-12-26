@@ -1,22 +1,19 @@
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        vector<int>::iterator lp;
-        vector<int>::iterator rp;
-        lp=height.begin();
-        rp=height.end()-1;
-        int sol=0,tempArea;
-        while(lp<rp){
-            if(*lp>=*rp){
-                tempArea=((*rp)*(rp-lp));
-                sol=max(sol,tempArea);
-                rp--;
+        int left=0;
+        int right=height.size()-1;
+        int ans=0;
+
+        while(left<right){
+            ans=max(ans,(right-left)*min(height[left],height[right]));
+            if(height[left]<height[right]){
+                left++;
             }else{
-                tempArea=(*lp)*(rp-lp);
-                sol=max(sol,tempArea);
-                lp++;
+                right--;
             }
         }
-        return sol;
+
+        return ans;
     }
 };
