@@ -20,21 +20,14 @@ public:
                     while(left<n&&nums[left]==nums[left-1]){
                         left++;
                     }
-                    while(right>=0&&right<n-1&&nums[right]==nums[right+1]){
+                    while(right>=0&&nums[right]==nums[right+1]){
                         right--;
                     }
                 }
                 else if(nums[i]+nums[left]+nums[right]>0){
                     right--;
-                    while(right>=0&&right<n-1&&nums[right]==nums[right+1]){
-                        right--;
-                    }
                 }else{
                     left++;
-                    while(left<n&&nums[left]==nums[left-1]){
-                        left++;
-                    }
-
                 }
 
             }
