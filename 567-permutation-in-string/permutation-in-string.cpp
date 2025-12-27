@@ -1,40 +1,52 @@
 class Solution {
 public:
-    bool checkMappings(map<char,int> reqCounts,map<char,int> currCounts){
-        for(auto it:reqCounts){
-            if(currCounts[it.first]!=it.second){
-                return false;
-            }
-        }
-        return true;
-    }
     bool checkInclusion(string s1, string s2) {
-        map<char,int> reqCounts;
-        map<char,int> currCounts;
-        int leng1=s1.length();
-        int leng2=s2.length();
-        if(leng1>leng2){
-            return false;
-        }
+        vector<int> freqs1(26,0);
+        vector<int> freqs2(26,0);
+        int numMatching=26;
+        if(s1.size()>s2.size()) return false;
 
-        for(char it: s1){
-            reqCounts[it]++;
-        }
-        for(int i=0;i<leng1;i++){
-            currCounts[s2[i]]++;
+
+        for(int i=0;i<s1.size();i++){
+            if(freqs1[s1[i]-'a']==freqs2[s1[i]-'a']){
+                numMatching--;
+            }
+            freqs1[s1[i]-'a']++;
         }
         
-        if(checkMappings(reqCounts,currCounts)){
-            return true;
-        }
-        for(int i=leng1;i<leng2;i++){
-            currCounts[s2[i-leng1]]--;
-            currCounts[s2[i]]++;
-            if(checkMappings(reqCounts,currCounts)){
-                return true;
+        for(int i=0;i<s1.size();i++){
+            if(freqs1[s2[i]-'a']==freqs2[s2[i]-'a']){
+                numMatching--;
+            }
+            freqs2[s2[i]-'a']++;
+            if(freqs1[s2[i]-'a']==freqs2[s2[i]-'a']){
+                numMatching++;
             }
         }
+        for(int i=s1.size();i<s2.size();i++){
+            if(numMatching==26) return true;
 
-        return false;
+            int delInd=i-s1.size();
+            if(freqs1[s2[delInd]-'a']==freqs2[s2[delInd]-'a']){
+                numMatching--;
+            }
+            freqs2[s2[delInd]-'a']--;
+            if(freqs1[s2[delInd]-'a']==freqs2[s2[delInd]-'a']){
+                numMatching++;
+            }
+
+            
+            if(freqs1[s2[i]-'a']==freqs2[s2[i]-'a']){
+                numMatching--;
+            }
+            freqs2[s2[i]-'a']++;
+            if(freqs1[s2[i]-'a']==freqs2[s2[i]-'a']){
+                numMatching++;
+            }
+
+
+        }
+        return numMatching==26;
+
     }
 };
