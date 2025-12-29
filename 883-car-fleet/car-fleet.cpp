@@ -1,29 +1,28 @@
 class Solution {
 public:
     int carFleet(int target, vector<int>& position, vector<int>& speed) {
-        vector<float> time;
+        vector<pair<int,int>> vec;
         int n=position.size();
         for(int i=0;i<n;i++){
-            time.push_back(float(target-position[i])/float(speed[i]));
+            vec.push_back({position[i],speed[i]});
         }
-        priority_queue<pair<int,float>> cars;
+        sort(vec.begin(),vec.end());
         for(int i=0;i<n;i++){
-            cars.push({position[i],time[i]});
+            position[i]=vec[i].first;
+            speed[i]=vec[i].second;
         }
-        int ans=1;
-        pair<int,float> prev=cars.top(),top;
-        cars.pop();
-        for(int i=1;i<n;i++){
-            top=cars.top();
-            cars.pop();
-            if(prev.second<top.second){
+
+        int ans=0;
+        double nextCarTime=0;
+
+        for(int i=n-1;i>=0;i--){
+            double currTime=(double)(target-position[i])/speed[i];
+            if(currTime>nextCarTime){
                 ans++;
-                
-            }else{
-                top.second=prev.second;
+                nextCarTime=currTime;
             }
-            prev=top;
         }
         return ans;
+        
     }
 };
