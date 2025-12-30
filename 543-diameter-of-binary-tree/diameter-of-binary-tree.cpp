@@ -10,30 +10,29 @@
  * };
  */
 class Solution {
-    int height(TreeNode* root){
-        if(root==nullptr){
-            return 0;
-        }
-        int left=height(root->left);
-        int right=height(root->right);
-
-        int val= max(left,right)+1;
-
-        return val;
-    }
 public:
     int diameterOfBinaryTree(TreeNode* root) {
-        if(root==nullptr){
-            return 0;
-        }
-        int left=diameterOfBinaryTree(root->left);
-        int right=diameterOfBinaryTree(root->right);
-        int curr=height(root->left)+height(root->right);
+        stack<TreeNode*> st;
+        st.push(root);
+        unordered_map<TreeNode*,bool> visited;
+        unordered_map<TreeNode*,int> depth;
+        depth[nullptr]=0;
+        int diameter=0;
 
-        if(curr>=left&&curr>=right){
-            return curr;
-        }else{
-            return max(left,right);
+        while(!st.empty()){
+            TreeNode* top=st.top();
+            if(visited[top]){
+                st.pop();
+                depth[top]=max(depth[top->left],depth[top->right])+1;
+                diameter=max(diameter,depth[top->left]+depth[top->right]);
+            }else{
+                visited[top]=true;
+
+                if(top->left!=nullptr) st.push(top->left);
+                if(top->right!=nullptr) st.push(top->right);
+            }
+
         }
+        return diameter;
     }
 };
