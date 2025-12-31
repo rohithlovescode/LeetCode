@@ -1,33 +1,27 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+
 class Solution {
 public:
-    bool isSameTree(TreeNode* root1,TreeNode* root2){
-        if(!root1 && !root2){
-            return true;
-        }
-        if(!root1||!root2){
-            return false;
-        }
-        return root1->val==root2->val &&isSameTree(root1->left,root2->left) && isSameTree(root1->right,root2->right);
+    bool isSameTree(TreeNode* node1,TreeNode* node2){
+        if(node1==NULL&&node2==NULL)  return true;
+        else if(node1==NULL||node2==NULL||node1->val!=node2->val) return false;
+        
+        return isSameTree(node1->left,node2->left)&&isSameTree(node1->right,node2->right);
     }
     bool isSubtree(TreeNode* root, TreeNode* subRoot) {
-        if(root==NULL){
-            return false;
+        stack<TreeNode*> st;
+        st.push(root);
+        while(!st.empty()){
+            TreeNode* top=st.top();
+            st.pop();
+
+            if(top->val==subRoot->val){
+                if(isSameTree(top,subRoot)) return true;
+            }
+
+            if(top->left) st.push(top->left);
+            if(top->right) st.push(top->right);
         }
-        if(root->val==subRoot->val&&isSameTree(root,subRoot)){
-            return true;
-        }
-        return isSubtree(root->left,subRoot)||isSubtree(root->right,subRoot);
-        
+
+        return false;
     }
 };
