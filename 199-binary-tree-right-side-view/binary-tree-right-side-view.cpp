@@ -11,26 +11,18 @@
  */
 class Solution {
 public:
-    int height(TreeNode* root){
-        if(root==NULL){
-            return 0;
+    void dfs(TreeNode* root, vector<int>& ans,int level){
+        if(!root) return;
+        if(level+1 > ans.size()){
+            ans.push_back(root->val);
         }
-        return max(height(root->left),height(root-> right)) +1;
-    }
-    void recurse(TreeNode* root,int level,vector<int> &sol){
-        if(root==NULL){
-            return;
-        }
-        sol[level]=root->val;
 
-        recurse(root->left,level+1,sol);
-        recurse(root->right,level+1,sol);
+        dfs(root->right,ans,level+1);
+        dfs(root->left,ans,level+1);
     }
     vector<int> rightSideView(TreeNode* root) {
-        int treeSize=height(root);
-        vector<int> sol(treeSize,0);
-        int level=0;
-        recurse(root,level,sol);
-        return sol;
+        vector<int> ans;
+        dfs(root,ans,0);
+        return ans;
     }
 };
