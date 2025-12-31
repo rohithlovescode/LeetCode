@@ -1,15 +1,25 @@
+class compare{
+public:
+    bool operator()(pair<int,int>& a,pair<int,int> &b){
+        return a.first*a.first+a.second*a.second<b.first*b.first+b.second*b.second;
+    }
+};
 class Solution {
 public:
-    vector<vector<int>> res;
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> minh; 
-        for (int i = 0; i < points.size(); i++) {
-            minh.push({pow(points[i][0],2) + pow(points[i][1],2), i}); 
+        priority_queue<pair<int,int>, vector<pair<int,int>>, compare> pq;
+        vector<vector<int>> ans;
+        for(auto point: points){
+            pq.push({point[0],point[1]});
+            if(pq.size()>k){
+                pq.pop();
+            }
         }
-        while (k-- > 0 && !minh.empty()) {
-            res.push_back({points[minh.top().second][0], points[minh.top().second][1]});
-            minh.pop();
+        while(!pq.empty()){
+            auto top=pq.top();
+            pq.pop();
+            ans.push_back(vector<int>({top.first,top.second}));
         }
-        return res;
+        return ans;
     }
 };
