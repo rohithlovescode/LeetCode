@@ -21,7 +21,7 @@ public:
 
 class Solution {
 public:
-    Node* dfs(Node* node,map<int,Node*> &mapp){
+    Node* dfs(Node* node,unordered_map<int,Node*> &mapp){
         if(!node) {
             return nullptr;
         }
@@ -39,7 +39,7 @@ public:
         return newNode;
     }
     Node* cloneGraph(Node* node) {
-        map<int,Node*> mapp;
+        unordered_map<int,Node*> mapp;
 
         return dfs(node,mapp);
     }
