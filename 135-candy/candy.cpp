@@ -30,7 +30,6 @@ public:
             }
             ans+=minCandies;
             candies[ind]=minCandies;
-            cout<<minCandies<<" "<<ind<<endl;
 
         }
 
