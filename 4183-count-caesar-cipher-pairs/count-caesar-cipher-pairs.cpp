@@ -2,7 +2,7 @@ class Solution {
 public:
     long long countPairs(vector<string>& words) {
         long long ans=0;
-        map<string,int> counts;
+        unordered_map<string,int> counts;
 
         for(int i=0;i<words.size();i++){
             string word=words[i];
