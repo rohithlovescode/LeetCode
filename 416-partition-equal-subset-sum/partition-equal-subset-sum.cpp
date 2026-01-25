@@ -1,20 +1,21 @@
 class Solution {
 public:
+    bool validPair(long long rem,vector<int>& nums,int ind, map<pair<int,int>,bool>& dp){
+        if(rem==0) return true;
+        if(rem<0||ind>=nums.size()) return false;
+        if(dp.count({rem,ind})!=0) return dp[{rem,ind}];
+
+        dp[{rem,ind}] = validPair(rem-nums[ind],nums,ind+1,dp)||validPair(rem,nums,ind+1,dp);
+        return dp[{rem,ind}];
+    }
     bool canPartition(vector<int>& nums) {
-        int totalSum = 0;
-        for (int num : nums) totalSum += num;
-
-        if (totalSum % 2 != 0) return false;
-
-        int targetSum = totalSum / 2;
-        vector<bool> dp(targetSum + 1, false);
-        dp[0] = true;
-        for (int num : nums) {
-            for (int currSum = targetSum; currSum >= num; --currSum) {
-                dp[currSum] = dp[currSum] || dp[currSum - num];
-                if (dp[targetSum]) return true;
-            }
+        long long sum=0;
+        for(auto num: nums){
+            sum+=num;
         }
-        return dp[targetSum];
+        if(sum%2==1) return false;
+        map<pair<int,int>,bool> dp;
+
+        return validPair(sum/2,nums,0,dp);
     }
 };
