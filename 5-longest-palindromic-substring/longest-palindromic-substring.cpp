@@ -24,7 +24,7 @@ public:
             }
             return;
         }
-        helper(s,left+1,right-1,leng,sInd,dp);
+        if(dp[left+1][right-1]==0)helper(s,left+1,right-1,leng,sInd,dp);
         
         if(dp[left+1][right-1]==1&&s[left]==s[right]) {
             
