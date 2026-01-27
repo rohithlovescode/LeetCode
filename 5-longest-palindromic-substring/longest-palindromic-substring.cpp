@@ -2,6 +2,8 @@ class Solution {
 public:
     void helper(string& s,int left,int right,int &leng, int &sInd,vector<vector<int>>& dp)// here s is gonna be copied everytime?
     {
+        if(dp[left][right]!=0) return;
+        
         if(left==right) {
             dp[left][right]=1;
             if(leng==0){
@@ -17,13 +19,11 @@ public:
                 leng=2;
                 sInd=left;
             }else{
-            helper(s,left+1,right,leng,sInd,dp);
-            helper(s,left,right-1,leng,sInd,dp);
-
+                helper(s,left+1,right,leng,sInd,dp);
+                helper(s,left,right-1,leng,sInd,dp);
             }
             return;
         }
-        if(dp[left][right]!=0) return;
         helper(s,left+1,right-1,leng,sInd,dp);
         
         if(dp[left+1][right-1]==1&&s[left]==s[right]) {
