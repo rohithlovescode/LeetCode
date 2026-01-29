@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool recurse(string s,int ind,map<string,bool>& wordMap,vector<int>& dp){
+    bool recurse(const string &s,int ind,unordered_map<string,bool>& wordMap,vector<int>& dp){
         if(ind==s.length()) return true;
 
         string currStr="";
@@ -22,7 +22,7 @@ public:
     bool wordBreak(string s, vector<string>& wordDict) {
         vector<int> dp(s.length()+1,0);
         dp[s.length()]=1;
-        map<string,bool> wordMap;
+        unordered_map<string,bool> wordMap;
         for(auto word:wordDict){
             wordMap[word]=true;
         }
