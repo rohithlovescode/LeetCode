@@ -2,6 +2,9 @@ class Solution {
 public:
     bool recurse(const string &s,int ind,unordered_map<string,bool>& wordMap,vector<int>& dp){
         if(ind==s.length()) return true;
+        if(dp[ind]!=0){
+            return dp[ind]==1?true:false;
+        }
 
         string currStr="";
         for(int i=ind;i<s.length();i++){
