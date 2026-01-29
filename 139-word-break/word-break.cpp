@@ -1,25 +1,32 @@
 class Solution {
 public:
-    bool recurse(string s, int ind, vector<string>& wordDict,vector<int>& dp){
-        if(ind==s.length()){
-            return true;
-        }
-        if(dp[ind]!=-1){
-            return dp[ind]==1?true:false;
-        }
-        bool currAns=false;
+    bool recurse(string s,int ind,map<string,bool>& wordMap,vector<int>& dp){
+        if(ind==s.length()) return true;
 
-        for(string word:wordDict){
-            if(!currAns && s.find(word,ind)==ind){
-                currAns=recurse(s,ind+word.length(),wordDict,dp);
+        string currStr="";
+        for(int i=ind;i<s.length();i++){
+            currStr+=s[i];
+            if(wordMap.count(currStr)!=0){
+                if(dp[i+1]==0) recurse(s,i+1,wordMap,dp);
+
+                if(dp[i+1]==1){
+                    dp[ind]=1;
+                    return true;
+                }
             }
         }
-        dp[ind]= currAns==true?1:0;
-        return currAns;
+        dp[ind]=-1;
+        return false;
+        
     }
     bool wordBreak(string s, vector<string>& wordDict) {
-        int ind=0;
-        vector<int> dp(s.length(),-1);
-        return recurse(s,ind,wordDict,dp);
+        vector<int> dp(s.length()+1,0);
+        dp[s.length()]=1;
+        map<string,bool> wordMap;
+        for(auto word:wordDict){
+            wordMap[word]=true;
+        }
+
+        return recurse(s,0,wordMap,dp);
     }
 };
