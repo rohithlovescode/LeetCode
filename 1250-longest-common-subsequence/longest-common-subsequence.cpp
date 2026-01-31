@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int topDown(string& text1, string& text2, int ind1,int ind2,vector<vector<int>>& dp){
+    int topDown(const string& text1,const string& text2, int ind1,int ind2,vector<vector<int>>& dp){
         if(ind1>=text1.size()||ind2>=text2.size()) return 0;
 
         if(dp[ind1][ind2]!=-1) return dp[ind1][ind2];
