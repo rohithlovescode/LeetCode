@@ -1,19 +1,17 @@
 class Solution {
 public:
-    void recurse(int currSum, int  ind, vector<int>& nums, int target,int& ans){
+    int solve(vector<int>& nums, int target, int ind, map<pair<int,int>,int>& ways){
         if(ind==nums.size()){
-            if(currSum==target){
-                ans++;
-            }
-            return;
+            return target==0?1:0;
         }
-
-        recurse(currSum+nums[ind],ind+1,nums,target,ans);
-        recurse(currSum-nums[ind],ind+1,nums,target,ans);
+        if(ways.count({ind,target})!=0) return ways[{ind,target}];
+        ways[{ind,target}]=solve(nums,target-nums[ind],ind+1,ways)+solve(nums,target+nums[ind],ind+1,ways);
+        return ways[{ind,target}];
     }
     int findTargetSumWays(vector<int>& nums, int target) {
-        int ans=0,currSum=0;
-        recurse(currSum,0,nums,target,ans);
-        return ans;
+        map<pair<int,int>,int> ways;
+        int n=nums.size();
+
+        return solve(nums, target,0,ways);
     }
 };
