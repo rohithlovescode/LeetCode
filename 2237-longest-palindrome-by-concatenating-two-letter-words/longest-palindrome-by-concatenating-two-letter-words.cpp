@@ -1,32 +1,32 @@
 class Solution {
 public:
-    string rev(string str){
-        int l=str.length();
-        for(int i=0;i<l/2;i++){
-            swap(str[i],str[l-i-1]);
-        }
-        return str;
-    }
-    
     int longestPalindrome(vector<string>& words) {
-        unordered_map<string,int> freq;
-        int ans=0;
-        for(auto word: words){
-            string revv=rev(word);
-            if(freq.count(revv)==0){
-                freq[word]++;
-            }else{
-                freq[revv]--;
-                ans+=4;
-                if(freq[revv]==0) freq.erase(revv);
+        // 2D array to act as a frequency map for 2-letter words
+        int freq[26][26] = {0};
+        int ans = 0;
+
+        for (const string& w : words) {
+            int a = w[0] - 'a';
+            int b = w[1] - 'a';
+
+            // If the reverse ("ba") exists, pair them up
+            if (freq[b][a] > 0) {
+                ans += 4;
+                freq[b][a]--;
+            } else {
+                // Otherwise, store current word "ab"
+                freq[a][b]++;
             }
         }
-        for(auto k: freq){
-            if(rev(k.first)==k.first){
-                ans+=2;
+
+        // Check for a single "aa" type word to put in the very middle
+        for (int i = 0; i < 26; i++) {
+            if (freq[i][i] > 0) {
+                ans += 2;
                 break;
             }
         }
+
         return ans;
     }
 };
