@@ -7,7 +7,6 @@ public:
             if(freq.count(num-k)!=0) ans+=freq[num-k];
             if(freq.count(num+k)!=0) ans+=freq[num+k];
             freq[num]++;
-            cout<<freq[num]<<endl;
         }
 
         return ans;
