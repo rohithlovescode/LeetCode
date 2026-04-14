@@ -10,26 +10,23 @@
 
 class Solution {
 public:
-    bool recurse(TreeNode* root, TreeNode*p, TreeNode* q, TreeNode* &ans){
-        if(root==nullptr) return false;
-        bool left=recurse(root->left, p,q,ans);
-        bool right=recurse(root->right,p,q,ans);
+    bool solve(TreeNode* curr, TreeNode* p, TreeNode* q, TreeNode* &lca){
+        if(!curr) return false;
 
-        if((root==p||root==q)&&(left||right)){
-            cout<<root->val;
+        bool left=solve(curr->left, p,q,lca);
+        bool right=solve(curr->right,p,q,lca);
 
-            ans= root;
-        }
-        else if(left&&right){
-            cout<<root->val;
-            ans=root;
-        }
+        if(lca) return true;
 
-        return root==p||root==q||left||right;
+        if(left&&right ||( (curr==p||curr==q)&&(left||right))) lca=curr;
+
+
+        return left||right||p==curr||q==curr;
     }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        TreeNode* ans=nullptr;
-        recurse(root,p,q,ans);
-        return ans;
+        TreeNode* lca=nullptr;
+        solve(root,p,q,lca);
+
+        return lca;
     }
 };
