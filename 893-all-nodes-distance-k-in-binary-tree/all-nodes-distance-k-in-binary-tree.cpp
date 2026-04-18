@@ -41,29 +41,29 @@ public:
         q.push(newNode);
 
         while(!q.empty()){
-            TreeNode* top=q.front(); q.pop();
+            TreeNode* front=q.front(); q.pop();
             if(dist>k) break;
 
-            if(top->val==-1){
+            if(front->val==-1){
                 dist++;
                 if(q.empty()) break;
-                q.push(top);
+                q.push(front);
                 continue;
             }
-            visited[top]=true;
-            cout<<top->val<<" "<<dist<<endl;
+            visited[front]=true;
+            cout<<front->val<<" "<<dist<<endl;
             if(dist==k){
-                ans.push_back(top->val);
+                ans.push_back(front->val);
             }
 
-            if(parent[top] && !visited[parent[top]]){
-                q.push(parent[top]);
+            if(parent[front] && !visited[parent[front]]){
+                q.push(parent[front]);
             }
-            if(top->left && !visited[top->left]){
-                q.push(top->left);
+            if(front->left && !visited[front->left]){
+                q.push(front->left);
             }
-            if(top->right && !visited[top->right]){
-                q.push(top->right);
+            if(front->right && !visited[front->right]){
+                q.push(front->right);
             }
 
         }
